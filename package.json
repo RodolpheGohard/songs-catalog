@@ -1,0 +1,20 @@
+{
+  "name": "songs-catalog",
+  "version": "1.0.0",
+  "description": "A tool for musicians to catalog songs they can play",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "songs",
+    "catalog",
+    "jazz-standards",
+    "instrument"
+  ],
+  "author": "Rodolphe Gohard",
+  "license": "MIT",
+  "dependencies": {
+    "elm": "^0.18.0"
+  }
+}
