@@ -1,5 +1,7 @@
 import Html exposing (Html, div, input, button, text)
-import Html.Events exposing (onClick)
+import Html.Attributes exposing (..)
+import Html.Events exposing (onClick, onInput)
+import String
 
 main =
     Html.beginnerProgram { model = model, view = view, update = update }
@@ -7,7 +9,8 @@ main =
 type alias Model =
     List String
 
-type Msg = Tg | Tgg
+type Msg
+  = Change String | Tg
 
 model : Model
 model =
@@ -19,7 +22,7 @@ view model =
         [
             div [] [ text <| String.join "" model],
             div [] (List.map (\songName -> text songName) model),
-            input [] [],
+            input [placeholder "Text placeholder", onInput Change] [],
             button [onClick Tg] [text "add"]
         ]
         
@@ -28,7 +31,7 @@ update msg model =
     case msg of
         Tg -> 
             "ta soeur" :: model
-        Tgg -> 
-            model
+        Change newContent ->
+            newContent :: model
 
 
