@@ -1,14 +1,26 @@
-import Html exposing (Html, div, input, button, text)
+import Html exposing (Html, Attribute, div, input, button, text, ul, li)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput)
-import String
+import Html.Events exposing (on, onClick, onInput, keyCode)
+import Json.Decode as Json
 
+onKeyUp : (Int -> msg) -> Attribute msg
+onKeyUp tagger =
+  on "keyup" (Json.map tagger keyCode)
+
+onEnter : (Msg) -> Attribute Msg
+onEnter callback =
+    onKeyUp (\keyCode -> if keyCode==13 then callback else Noop)
+
+
+
+
+main : Program Never Model Msg
 main =
     Html.beginnerProgram { model = model, view = view, update = update }
     
 
 type Msg
-    = Change String | AddSong
+    = Change String | AddSong | Noop
 
 
 type alias Model
@@ -19,15 +31,15 @@ type alias Model
 
 model : Model
 model = Model ["Cantaloupe Island"] ""
-    
+
+--onEnter : (String -> msg) -> Html.Attribute msg 
 
 view : Model -> Html Msg
 view model =
     div []
         [
-            div [] [ text <| String.join "" model.songs],
-            div [] (List.map (\songName -> text songName) model.songs),
-            input [value model.inputSong, placeholder "Text placeholder", onInput Change] [],
+            ul [] (List.map (\songName -> li [] [text songName]) model.songs),
+            input [value model.inputSong, placeholder "Text placeholder", onInput Change, onEnter AddSong] [],
             button [onClick AddSong] [text "add"]
         ]
         
@@ -38,5 +50,7 @@ update msg model =
             Model (model.inputSong :: model.songs) ""
         Change newContent ->
             { model | inputSong = newContent }
+        Noop ->
+            model
 
 
